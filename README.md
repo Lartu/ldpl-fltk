@@ -38,6 +38,7 @@ What this library should support in the future:
 - [ ] Keyboard shortcuts (e.g., Control + S)
 - [ ] Dropdowns
 - [ ] Treeviews
+- [ ] Setting label text size
 
 # Usage
 
