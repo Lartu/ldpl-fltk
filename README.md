@@ -49,3 +49,7 @@ From the [Colorcalib](examples/colorcalib) example.
 ![Example](examples/lartumathic/screen.png)
 
 From the [Lartumathic](examples/lartumathic) example.
+
+# License
+
+The LDPL FLTK library is released under the MIT license. The Fast Light ToolKit is released under the GPL license.
