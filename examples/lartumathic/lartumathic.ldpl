@@ -1,0 +1,104 @@
+include "../../ldpl-fltk/fltk.ldpl"
+
+data:
+currentPath is text
+
+procedure:
+call gui_theme with "gtk"
+call gui_window_start with "mainWindow"
+call gui_size with "mainWindow" 800 544
+call setTitle
+
+call gui_textentry with "txtArea"
+call gui_locate with "txtArea" 10 10
+call gui_size with "txtArea" 780 480
+call gui_nowrap with "txtArea"
+
+call gui_button with "btnConvert"
+call gui_size with "btnConvert" 480 34
+call gui_locate with "btnConvert" 10 500
+call gui_settext with "btnConvert" "Replace Special Sequences"
+
+call gui_button with "btnLoad"
+call gui_size with "btnLoad" 90 34
+call gui_locate with "btnLoad" 500 500
+call gui_settext with "btnLoad" "Load File"
+
+call gui_button with "btnSaveAs"
+call gui_size with "btnSaveAs" 90 34
+call gui_locate with "btnSaveAs" 700 500
+call gui_settext with "btnSaveAs" "Save As..."
+
+call gui_button with "btnSave"
+call gui_size with "btnSave" 90 34
+call gui_locate with "btnSave" 600 500
+call gui_settext with "btnSave" "Save File"
+call gui_disable with "btnSave"
+
+call gui_window_end with "mainWindow"
+call gui_show with "mainWindow"
+call gui_run
+
+sub gui_callback
+    parameters:
+        widget is text
+        action is text
+    local data:
+        writtenText is text
+        path is text
+    procedure:
+        if action is equal to "pressed" then
+            if widget is equal to "btnConvert" then
+                call gui_gettext with "txtArea" writtenText
+                call replaceText with writtenText
+                call gui_settext with "txtArea" writtenText
+            else if widget is equal to "btnLoad" then
+                call gui_file with "Choose a file to load" "file" path
+                load file path in writtenText
+                call gui_settext with "txtArea" writtenText
+                store path in currentPath
+                call setTitle
+                call gui_enable with "btnSave"
+            else if widget is equal to "btnSaveAs" then
+                call gui_file with "Save as..." "file" path
+                call gui_gettext with "txtArea" writtenText
+                write writtenText to file path
+                store path in currentPath
+                call setTitle
+                call gui_enable with "btnSave"
+            else if widget is equal to "btnSave" then
+                call gui_gettext with "txtArea" writtenText
+                write writtenText to file currentPath
+            end if
+        end if
+end sub
+
+sub replaceText
+    parameters:
+        txt is text
+    procedure:
+        replace ":s:" from txt with "Σ" in txt
+        replace ":S:" from txt with "Σ" in txt
+        replace ":l:" from txt with "λ" in txt
+        replace ":L:" from txt with "Λ" in txt
+        replace ":in:" from txt with "∈" in txt
+        replace ":notin:" from txt with "∉" in txt
+        replace ":subset:" from txt with "⊆" in txt
+        replace ":union:" from txt with "⋃" in txt
+        replace ":inter:" from txt with "⋂" in txt
+        replace ":and:" from txt with "∧" in txt
+        replace ":or:" from txt with "∨" in txt
+end sub
+
+sub setTitle
+    local data:
+        title is text
+    procedure:
+        store "Lartumathic" in title
+        if currentPath is not equal to "" then
+            in title join title " - " currentPath
+        else
+            in title join title " - New File"
+        end if
+        call gui_settext with "mainWindow" title
+end sub

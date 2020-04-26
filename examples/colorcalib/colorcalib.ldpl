@@ -1,0 +1,149 @@
+include "../../ldpl-fltk/fltk.ldpl"
+
+data:
+    result is text
+    tokens is text list
+    gamma is number
+    brightness is number
+    contrast is number
+
+procedure:
+
+sub getValues
+    # Get gamma
+    execute "xrandr --verbose | grep -i gamma:" and store output in result
+    split result by ":" in tokens
+    trim tokens:1 in tokens:1
+    store tokens:1 in gamma
+    display "Gamma: " gamma lf
+
+    # Get brightness and contrast
+    execute "xcalib -verbose -s 0 -alter" and store output in result
+    split result by "\n" in tokens
+    display tokens:0 lf
+    split tokens:0 by " " in tokens
+    store tokens:2 in brightness
+    store tokens:4 in contrast
+    display "brightness: " brightness lf
+    display "contrast: " contrast lf
+
+    call gui_setvalue with "blue_g" gamma
+    call gui_setvalue with "blue_b" brightness
+    call gui_setvalue with "blue_c" contrast
+end sub
+
+call gui_theme with "fltk"
+call gui_window_start with "mainWindow"
+call gui_size with "mainWindow" 520 170
+call gui_settext with "mainWindow" "Colorcalib"
+
+call gui_valuefillslider with "blue_g"
+call gui_locate with "blue_g" 10 10
+call gui_size with "blue_g" 500 20
+call gui_settext with "blue_g" "Screen Gamma"
+call gui_sliderbounds with "blue_g" 0.1 5.0 0.1
+
+call gui_valuefillslider with "blue_b"
+call gui_locate with "blue_b" 10 50
+call gui_size with "blue_b" 500 20
+call gui_settext with "blue_b" "Screen Brightness"
+call gui_sliderbounds with "blue_b" 0.0 99.0 0.1
+
+call gui_valuefillslider with "blue_c"
+call gui_locate with "blue_c" 10 90
+call gui_size with "blue_c" 500 20
+call gui_settext with "blue_c" "Screen Contrast"
+call gui_sliderbounds with "blue_c" 1.0 100.0 0.1
+
+call getValues
+
+call gui_button with "apply"
+call gui_locate with "apply" 10 130
+call gui_size with "apply" 100 30
+call gui_settext with "apply" "Apply"
+
+call gui_button with "reset"
+call gui_locate with "reset" 120 130
+call gui_size with "reset" 150 30
+call gui_settext with "reset" "Restore Defaults"
+
+call gui_button with "save"
+call gui_locate with "save" 280 130
+call gui_size with "save" 110 30
+call gui_settext with "save" "Save Profile"
+
+call gui_button with "load"
+call gui_locate with "load" 400 130
+call gui_size with "load" 110 30
+call gui_settext with "load" "Load Profile"
+
+call gui_window_end with "mainWindow"
+
+call gui_show with "mainWindow"
+call gui_run
+
+
+sub gui_callback
+    parameters:
+        widget is text
+        action is text
+    local data:
+        writtenText is text
+        path is text
+        len is number
+    procedure:
+        if action is equal to "pressed" then
+            if widget is equal to "apply" then
+                call apply
+            else if widget is equal to "reset" then
+                call reset
+                call getValues
+            else if widget is equal to "save" then
+                call gui_file with "Save Profile As..." "file" path
+                store "" in writtenText
+                in writtenText join gamma "\n" brightness "\n" contrast "\n"
+                write writtenText to file path
+            else if widget is equal to "load" then
+                call gui_file with "Load Profile" "file" path
+                load file path in writtenText
+                if writtenText is not equal to "" then
+                    split writtenText by "\n" in tokens
+                    get length of tokens in len
+                    if len is greater than or equal to 3 then
+                        store tokens:0 in gamma
+                        store tokens:1 in brightness
+                        store tokens:2 in contrast
+                        call gui_setvalue with "blue_g" gamma
+                        call gui_setvalue with "blue_b" brightness
+                        call gui_setvalue with "blue_c" contrast
+                    end if
+                end if
+            end if
+        else if action is equal to "modified" then
+            call apply
+        end if
+end sub
+
+sub reset
+    execute "xcalib -clear" 
+end sub
+
+sub apply
+    local data:
+        command is text
+    procedure:
+        call gui_getvalue with "blue_g" gamma
+        call gui_getvalue with "blue_b" brightness
+        call gui_getvalue with "blue_c" contrast
+        display lf
+        call reset
+        in command join "xcalib -gc " gamma " -alter"
+        display "Executing: " command lf
+        execute command
+        in command join "xcalib -b " brightness " -alter"
+        display "Executing: " command lf
+        execute command
+        in command join "xcalib -co " contrast " -alter"
+        display "Executing: " command lf
+        execute command
+end sub

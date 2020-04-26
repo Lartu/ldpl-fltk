@@ -1,0 +1,434 @@
+extension "fltk.cpp"
+flag "-I/usr/local/include -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_THREAD_SAFE -D_REENTRANT -L/usr/local/lib -lfltk -lXrender -lXcursor -lXfixes -lXext -lXft -lfontconfig -lXinerama -lpthread -ldl -lm -lX11"
+
+data:
+    LDPLFLTK_WIDGET_NAME is external text
+    LDPLFLTK_WIDGET_TEXT is external text
+    LDPLFLTK_WIDGET_TEXT2 is external text
+    LDPLFLTK_WIDGET_TEXT3 is external text
+    LDPLFLTK_WIDGET_TEXT4 is external text
+    LDPLFLTK_WIDGET_TEXT5 is external text
+    LDPLFLTK_N1 is external number
+    LDPLFLTK_N2 is external number
+    LDPLFLTK_N3 is external number
+    LDPLFLTK_N4 is external number
+
+procedure:
+
+
+# --- Theme Changing ---
+sub gui_theme
+    parameters:
+        theme_name is text
+    procedure:
+        if theme_name is equal to "gtk" then
+            call external LDPLFLTK_THEME_GTK
+        else if theme_name is equal to "plastic" then
+            call external LDPLFLTK_THEME_PLASTIC
+        else
+            call external LDPLFLTK_THEME_FLTK
+        end if
+end sub
+
+
+# --- LDPL FLTK Running ---
+sub gui_run
+    call external LDPLFLTK_RUN
+end sub
+
+
+# --- FL_Widget Properties ---
+sub gui_show
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_SHOW
+end sub
+
+sub gui_locate
+    parameters:
+        name is text
+        x is number
+        y is number
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        store x in LDPLFLTK_N1
+        store y in LDPLFLTK_N2
+        call external LDPLFLTK_LOCATE
+end sub
+
+sub gui_size
+    parameters:
+        name is text
+        w is number
+        h is number
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        store w in LDPLFLTK_N1
+        store h in LDPLFLTK_N2
+        call external LDPLFLTK_SIZE
+end sub
+
+sub gui_setvalue
+    parameters:
+        name is text
+        val is number
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        store val in LDPLFLTK_N1
+        call external LDPLFLTK_SETVALUE
+end sub
+
+sub gui_getvalue
+    parameters:
+        name is text
+        into is number
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_GETVALUE
+        store LDPLFLTK_N2 in into
+end sub
+
+sub gui_settext
+    parameters:
+        name is text
+        val is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        store val in LDPLFLTK_WIDGET_TEXT
+        call external LDPLFLTK_SETTEXT
+end sub
+
+sub gui_gettext
+    parameters:
+        name is text
+        into is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_GETTEXT
+        store LDPLFLTK_WIDGET_TEXT in into
+end sub
+
+sub gui_boxed
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_BOXED
+end sub
+
+sub gui_disable
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_DISABLE
+end sub
+
+sub gui_enable
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_ENABLE
+end sub
+
+
+# --- Windows ---
+sub gui_window_start
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_OPEN_WINDOW
+end sub
+
+sub gui_window_end
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_CLOSE_WINDOW
+end sub
+
+
+# --- Buttons ---
+sub gui_button
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_BUTTON
+end sub
+
+sub gui_check
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_CHECK
+end sub
+
+sub gui_radio
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_RADIO
+end sub
+
+
+# --- Entries ---
+sub gui_entry
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_ENTRY
+end sub
+
+sub gui_output
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_OUTPUT
+end sub
+
+sub gui_textentry
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_TEXTENTRY
+end sub
+
+sub gui_textoutput
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_TEXTOUTPUT
+end sub
+
+sub gui_nowrap
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_NOWRAP
+end sub
+
+sub gui_wrap
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_WRAP
+end sub
+
+
+# --- Labels ---
+sub gui_label
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_LABEL
+end sub
+
+sub gui_emboss
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_EMBOSS
+end sub
+
+sub gui_italic
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_ITALIC
+end sub
+
+sub gui_bold
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_BOLD
+end sub
+
+sub gui_bolditalic
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_BOLDITALIC
+end sub
+
+sub gui_shadow
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_SHADOW
+end sub
+
+sub gui_center
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_CENTER
+end sub
+
+sub gui_left
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_LEFT
+end sub
+
+sub gui_right
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_RIGHT
+end sub
+
+
+# --- Sliders ---
+sub gui_slider
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_SLIDER
+end sub
+
+sub gui_vslider
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_VSLIDER
+end sub
+
+sub gui_fillslider
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_FILLSLIDER
+end sub
+
+sub gui_vfillslider
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_VFILLSLIDER
+end sub
+
+sub gui_valueslider
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_VALUESLIDER
+end sub
+
+sub gui_vvalueslider
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_VVALUESLIDER
+end sub
+
+sub gui_valuefillslider
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_VALUEFILLSLIDER
+end sub
+
+sub gui_vvaluefillslider
+    parameters:
+        name is text
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        call external LDPLFLTK_VVALUEFILLSLIDER
+end sub
+
+sub gui_sliderbounds
+    parameters:
+        name is text
+        min is number
+        max is number
+        _step is number
+    procedure:
+        store name in LDPLFLTK_WIDGET_NAME
+        store min in LDPLFLTK_N1
+        store max in LDPLFLTK_N2
+        store _step in LDPLFLTK_N3
+        call external LDPLFLTK_SLIDERBOUNDS
+end sub
+
+# --- Dialogs ---
+sub gui_message
+    parameters:
+        title is text
+        body is text
+    procedure:
+        store title in LDPLFLTK_WIDGET_TEXT
+        store body in LDPLFLTK_WIDGET_TEXT2
+        call external LDPLFLTK_MESSAGE
+end sub
+
+sub gui_question
+    parameters:
+        title is text
+        body is text
+        opt1 is text
+        opt2 is text
+        opt3 is text
+        result is number
+    procedure:
+        store title in LDPLFLTK_WIDGET_TEXT
+        store body in LDPLFLTK_WIDGET_TEXT2
+        store opt1 in LDPLFLTK_WIDGET_TEXT3
+        store opt2 in LDPLFLTK_WIDGET_TEXT4
+        store opt3 in LDPLFLTK_WIDGET_TEXT5
+        call external LDPLFLTK_QUESTION
+        store LDPLFLTK_N1 in result
+end sub
+
+sub gui_file
+    parameters:
+        title is text
+        type is text #file #dir
+        result is text
+    procedure:
+        store type in LDPLFLTK_WIDGET_TEXT
+        store title in LDPLFLTK_WIDGET_TEXT2
+        call external LDPLFLTK_FILEDIALOG
+        store LDPLFLTK_WIDGET_TEXT3 in result
+end sub
+
+# --- Callback ---
+external sub LDPLFLTK_CALLBACK
+    call gui_callback with LDPLFLTK_WIDGET_NAME LDPLFLTK_WIDGET_TEXT
+end sub
+
+
+
+
+
