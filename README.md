@@ -10,12 +10,14 @@ At the moment this library supports:
 - Buttons
 - Check buttons
 - Radio buttons
-- Horizontal and vertical sliders (both with handle and fill-sliders)
+- Horizontal and vertical sliders (both with handle and fill-sliders, with and without value text)
+- Setting maximum, minimum and step value for sliders.
 - Labels
 - Text entry areas (single line)
 - Text output areas (single line)
 - Text entry areas (multiline)
 - Text output areas (multiline)
+- Setting text area wrap mode
 - Multiple themes
 - Moving widgets
 - Scaling widgets
@@ -27,6 +29,15 @@ At the moment this library supports:
 - Message Dialog
 - Question Dialog
 - File Chooser Dialog
+- Probably more stuff
+
+What this library should support in the future:
+- [ ] Resizeable windows
+- [ ] Callback for the close button
+- [ ] Color picker dialog
+- [ ] Keyboard shortcuts (e.g., Control + S)
+- [ ] Dropdowns
+- [ ] Treeviews
 
 # Usage
 
